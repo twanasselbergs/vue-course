@@ -60,16 +60,25 @@
 
   <body>
     <div id="app">
-      <form>
-        <input placeholder="Enter image URL" />
-        <button type="submit" @click="addPhoto">Add Photo</button>
+      <form @submit.prevent="addPhoto">
+        <input placeholder="Enter image URL" v-model="newPhotoUrl" />
+        <button type="submit">Add Photo</button>
       </form>
 
-      <p class="no-photos">No photos added yet. Add some!</p>
+      <p class="no-photos" v-if="photos.length === 0">
+        No photos added yet. Add some!
+      </p>
 
-      <div class="gallery">
-        <div class="photo">
-          <button class="favorite-button">★</button>
+      <div class="gallery" v-else>
+        <div class="photo" v-for="(photo, index) in photos" :key="photo.id">
+          <img :src="photo.url" @click="removePhoto(index)" />
+          <button
+            class="favorite-button"
+            @click="toggleFavorite(photo)"
+            :class="{'active': photo.isFavorite}"
+          >
+            ★
+          </button>
         </div>
       </div>
     </div>
@@ -78,13 +87,51 @@
       const { createApp, ref } = Vue;
       const App = {
         setup() {
+          const photos = ref([
+            {
+              id: 1,
+              url: "https://images.unsplash.com/photo-1712939706943-b6b3b4549937?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D",
+              isFavorite: false,
+            },
+            {
+              id: 2,
+              url: "https://plus.unsplash.com/premium_photo-1712933121311-dcdc41d9fb17?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHx8",
+              isFavorite: false,
+            },
+            {
+              id: 3,
+              url: "https://images.unsplash.com/photo-1713105227378-91e790dfe4f0?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8",
+              isFavorite: false,
+            },
+          ]);
+          const newPhotoUrl = ref("");
           const addPhoto = () => {
-            console.log("I was clicked");
+            console.log("I was clicked!");
+            const photo = {
+              id: photos.value.length + 1,
+              url: newPhotoUrl.value,
+              isFavorite: false,
+            };
+            if (newPhotoUrl.value !== "") {
+              photos.value.push(photo);
+              newPhotoUrl.value = "";
+            }
           };
-          const toggleFavorite = () => {};
+          const toggleFavorite = (photo) => {
+            console.log(photo);
+            photo.isFavorite = !photo.isFavorite;
+            console.log(photo);
+          };
+          const removePhoto = (index) => {
+            photos.value.splice(index, 1);
+          };
 
           return {
             addPhoto,
+            photos,
+            newPhotoUrl,
+            toggleFavorite,
+            removePhoto,
           };
         },
       };
