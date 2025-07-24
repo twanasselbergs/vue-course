@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <form @submit.prevent="addTask">
+        <input
+          ref="newTaskInput"
+          placeholder="Add new task"
+          v-model="newTask"
+        />
+        <select v-model="newPriority">
+          <option disabled value="">Select priority</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+        <button type="submit">Add Task</button>
+      </form>
+
+      <input placeholder="Filter tasks..." />
+
+      <div v-if="tasks.length === 0">
+        <p>No tasks found. Try changing the filter or add some tasks</p>
+      </div>
+      <div v-else>
+        <h3>Your Tasks</h3>
+        <div
+          v-for="task in tasks"
+          :key="task.id"
+          :class="{'task': true, completed: task.done}"
+        >
+          <input type="checkbox" v-model="task.done" />
+          <span>{{task.description}}</span>
+        </div>
+
+        <button class="remove-button">x</button>
+      </div>
+    </div>
+
+    <script>
+      const { createApp, onMounted, onBeforeMount, ref } = Vue;
+
+      const App = {
+        setup() {
+          const tasks = ref([
+            {
+              id: 1,
+              description: "Buy groceries",
+              priority: "High",
+              done: false,
+            },
+            {
+              id: 2,
+              description: "Buy groceries",
+              priority: "High",
+              done: false,
+            },
+          ]);
+          const newTaskInput = ref(null);
+          const newTask = ref("");
+          const newPriority = ref("");
+          onMounted(() => {
+            newTaskInput.value.focus();
+          });
+          const addTask = () => {
+            if (newTask.value != "" && newPriority.value != "") {
+              tasks.value.push({
+                id: tasks.value.length + 1,
+                description: newTask.value,
+                priority: newPriority.value,
+                done: false,
+              });
+              newTask.value = "";
+              newPriority.value = "";
+            }
+          };
+          return {
+            newTaskInput,
+            tasks,
+            newTask,
+            newPriority,
+            addTask,
+          };
+        },
+      };
+
+      createApp(App).mount("#app");
+    </script>
+  </body>
+</html>
