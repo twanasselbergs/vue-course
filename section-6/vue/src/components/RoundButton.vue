@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'text-sm font-medium rounded-full px-3 py-1',
+      'text-sm font-medium rounded-full-full px-3 py-1',
       variants[variant] ?? variants.default,
     ]"
     @click="$emit('register')"

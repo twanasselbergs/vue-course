@@ -26,6 +26,7 @@
         :title="booking.eventTitle"
       />
     </section>
+    <NotificationList />
   </main>
 </template>
 
@@ -35,6 +36,7 @@ import { ref, onMounted } from "vue";
 import BookingItem from "./components/BookingItem.vue";
 import EventCard from "./components/EventCard.vue";
 import LoadingEventCard from "./components/LoadingEventCard.vue";
+import NotificationList from "@/components/NotificationList.vue";
 
 const events = ref([]);
 const eventsLoading = ref(false);

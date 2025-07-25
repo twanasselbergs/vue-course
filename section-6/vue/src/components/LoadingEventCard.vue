@@ -5,7 +5,7 @@
     <div class="p-4 h-6 bg-gray-300"></div>
 
     <div class="flex justify-end p-4">
-      <div class="h-8 w-24 bg-gray-300 rounded-full"></div>
+      <div class="h-8 w-24 bg-gray-300 rounded-full-full"></div>
     </div>
   </RoundedCard>
 </template>
