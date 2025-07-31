@@ -79,7 +79,10 @@ const closeModal = () => {
 
         <Draggable :list="list.cards" group="cards">
           <template #item="{ element }">
-            <div class="bg-white p-2 my-2 rounded shadow cursor-pointer">
+            <div
+              @click="openModal(listIndex, element)"
+              class="bg-white p-2 my-2 rounded shadow cursor-pointer"
+            >
               <span class="text-sm font-medium">{{ element.title }}</span>
               <p class="text-xs text-gray-400">{{ element.description }}</p>
             </div>
@@ -95,6 +98,12 @@ const closeModal = () => {
       </div>
     </div>
 
-    <ModalDialog :is-open="isModalOpen" @close="closeModal" />
+    <ModalDialog
+      :is-open="isModalOpen"
+      :card="editingCard"
+      :mode="modalMode"
+      @close="closeModal"
+      @save="saveCard"
+    />
   </main>
 </template>
